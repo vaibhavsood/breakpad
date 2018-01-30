@@ -71,6 +71,8 @@ struct ThreadInfo {
 #elif defined(__mips__)
   // Use the structure defined in <sys/ucontext.h>.
   mcontext_t mcontext;
+#elif defined(__PPC__)
+  struct pt_regs regs;
 #endif
 
   // Returns the instruction pointer (platform-dependent impl.).

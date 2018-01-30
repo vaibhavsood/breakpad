@@ -43,6 +43,7 @@
 #include "common/scoped_ptr.h"
 #include "common/using_std_string.h"
 #include "google_breakpad/common/minidump_format.h"
+#include "client/linux/dump_writer_common/ucontext_reader.h"
 
 namespace google_breakpad {
 
@@ -196,7 +197,11 @@ class ExceptionHandler {
     // #ifdef this out because FP state is not part of user ABI for Linux ARM.
     // In case of MIPS Linux FP state is already part of ucontext_t so
     // 'float_state' is not required.
-    fpstate_t float_state;
+    #if defined(__PPC__)
+       struct _libc_fpstate float_state;
+    #else
+       fpstate_t float_state;
+    #endif
 #endif
   };
 

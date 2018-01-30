@@ -138,7 +138,7 @@ class MicrodumpWriter {
                   const MicrodumpExtraInfo& microdump_extra_info,
                   LinuxDumper* dumper)
       : ucontext_(context ? &context->context : NULL),
-#if !defined(__ARM_EABI__) && !defined(__mips__)
+#if !defined(__ARM_EABI__) && !defined(__mips__) && !defined(__PPC__)
         float_state_(context ? &context->float_state : NULL),
 #endif
         dumper_(dumper),
@@ -337,6 +337,8 @@ class MicrodumpWriter {
 # else
 #  error "This mips ABI is currently not supported (n32)"
 #endif
+#elif defined(__PPC__)
+    const char kArch[] = "ppc";
 #else
 #error "This code has not been ported to your platform yet"
 #endif
@@ -605,8 +607,10 @@ class MicrodumpWriter {
   void* Alloc(unsigned bytes) { return dumper_->allocator()->Alloc(bytes); }
 
   const ucontext_t* const ucontext_;
-#if !defined(__ARM_EABI__) && !defined(__mips__)
+#if !defined(__ARM_EABI__) && !defined(__mips__) && !defined(__PPC__)
   const google_breakpad::fpstate_t* const float_state_;
+#elif defined(__PPC__)
+  const _libc_fpstate* const float_state_ = NULL;
 #endif
   LinuxDumper* dumper_;
   const MappingList& mapping_list_;

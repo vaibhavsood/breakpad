@@ -37,6 +37,15 @@
 #include "common/memory_allocator.h"
 #include "google_breakpad/common/minidump_format.h"
 
+#if defined(__PPC__)
+struct _libc_fpstate
+  {
+        double fpregs[32];
+        double fpscr;
+        unsigned int _pad[2];
+  };
+#endif
+
 namespace google_breakpad {
 
 // Wraps platform-dependent implementations of accessors to ucontext_t structs.
@@ -54,6 +63,9 @@ struct UContextReader {
 #elif defined(__aarch64__)
   static void FillCPUContext(RawContextCPU *out, const ucontext_t *uc,
                              const struct fpsimd_context* fpregs);
+#elif defined(__PPC__)
+  static void FillCPUContext(RawContextCPU *out, const ucontext *uc,
+                             const struct _libc_fpstate* fpregs_);
 #else
   static void FillCPUContext(RawContextCPU *out, const ucontext_t *uc);
 #endif

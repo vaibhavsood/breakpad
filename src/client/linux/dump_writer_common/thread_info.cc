@@ -270,7 +270,26 @@ void ThreadInfo::FillCPUContext(RawContextCPU* out) const {
   out->float_save.fir = mcontext.fpc_eir;
 #endif
 }
-#endif  // __mips__
+#elif defined (__PPC__)
+
+uintptr_t ThreadInfo::GetInstructionPointer() const {
+  return regs.nip;
+}
+void ThreadInfo::FillCPUContext(RawContextCPU* out ) const {
+  out->context_flags = MD_CONTEXT_PPC_FULL;
+
+  for (int i = 0; i < MD_CONTEXT_PPC64_GPR_COUNT; ++i)
+    out->gpr[i] = regs.gpr[i];
+
+  out->srr0 = regs.nip;
+  out->srr1 = regs.msr;
+  out->cr = regs.ccr;
+  out->xer = regs.xer;
+  out->lr = regs.link;
+  out->ctr = regs.ctr;
+
+}
+#endif  // __PPC___
 
 void ThreadInfo::GetGeneralPurposeRegisters(void** gp_regs, size_t* size) {
   assert(gp_regs || size);
@@ -294,6 +313,11 @@ void ThreadInfo::GetFloatingPointRegisters(void** fp_regs, size_t* size) {
     *fp_regs = &mcontext.fpregs;
   if (size)
     *size = sizeof(mcontext.fpregs);
+#elif defined(__PPC64__)
+  if (fp_regs)
+    *fp_regs = &regs;
+  if (size)
+    *size = sizeof(regs);
 #else
   if (fp_regs)
     *fp_regs = &fpregs;

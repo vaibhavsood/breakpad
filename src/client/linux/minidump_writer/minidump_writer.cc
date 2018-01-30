@@ -988,7 +988,7 @@ class MinidumpWriter {
     }
     return true;
   }
-#elif defined(__arm__) || defined(__aarch64__)
+#elif defined(__arm__) || defined(__aarch64__) || defined(__PPC__)
   bool WriteCPUInformation(MDRawSystemInfo* sys_info) {
     // The CPUID value is broken up in several entries in /proc/cpuinfo.
     // This table is used to rebuild it from the entries.
@@ -1040,6 +1040,8 @@ class MinidumpWriter {
     sys_info->processor_architecture =
 #if defined(__aarch64__)
         MD_CPU_ARCHITECTURE_ARM64;
+#elif defined(__PPC__)
+        MD_CPU_ARCHITECTURE_PPC;
 #else
         MD_CPU_ARCHITECTURE_ARM;
 #endif
@@ -1325,7 +1327,11 @@ class MinidumpWriter {
 
   const ucontext_t* const ucontext_;  // also from the signal handler
 #if !defined(__ARM_EABI__) && !defined(__mips__)
-  const google_breakpad::fpstate_t* const float_state_;  // ditto
+    #if defined(__PPC__)
+        const struct _libc_fpstate* const float_state_=NULL;
+    #else
+        const google_breakpad::fpstate_t* const float_state_;  // ditto
+    #endif
 #endif
   LinuxDumper* dumper_;
   MinidumpFileWriter minidump_writer_;
