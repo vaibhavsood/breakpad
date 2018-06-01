@@ -44,6 +44,8 @@ typedef MDRawContextARM RawContextCPU;
 typedef MDRawContextARM64 RawContextCPU;
 #elif defined(__mips__)
 typedef MDRawContextMIPS RawContextCPU;
+#elif defined(__powerpc64__)
+typedef MDRawContextPPC64 RawContextCPU;
 #else
 #error "This code has not been ported to your platform yet."
 #endif

@@ -37,6 +37,14 @@
 #include "common/memory_allocator.h"
 #include "google_breakpad/common/minidump_format.h"
 
+#if defined(__powerpc__)
+struct _libc_fpstate {
+  double fpregs[32];
+  double fpscr;
+  unsigned int _pad[2];
+};
+#endif
+
 namespace google_breakpad {
 
 // Wraps platform-dependent implementations of accessors to ucontext_t structs.
@@ -48,7 +56,7 @@ struct UContextReader {
   // Juggle a arch-specific ucontext_t into a minidump format
   //   out: the minidump structure
   //   info: the collection of register structures.
-#if defined(__i386__) || defined(__x86_64)
+#if defined(__i386__) || defined(__x86_64) || defined(__powerpc__)
   static void FillCPUContext(RawContextCPU *out, const ucontext_t *uc,
                              const struct _libc_fpstate* fp);
 #elif defined(__aarch64__)

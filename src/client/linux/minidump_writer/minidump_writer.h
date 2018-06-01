@@ -38,6 +38,7 @@
 #include <list>
 #include <utility>
 
+#include "client/linux/dump_writer_common/ucontext_reader.h"
 #include "client/linux/minidump_writer/linux_dumper.h"
 #include "google_breakpad/common/minidump_format.h"
 

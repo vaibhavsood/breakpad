@@ -138,7 +138,7 @@ class MicrodumpWriter {
                   const MicrodumpExtraInfo& microdump_extra_info,
                   LinuxDumper* dumper)
       : ucontext_(context ? &context->context : NULL),
-#if !defined(__ARM_EABI__) && !defined(__mips__)
+#if !defined(__ARM_EABI__) && !defined(__mips__) && !defined(__powerpc__)
         float_state_(context ? &context->float_state : NULL),
 #endif
         dumper_(dumper),
@@ -337,6 +337,10 @@ class MicrodumpWriter {
 # else
 #  error "This mips ABI is currently not supported (n32)"
 #endif
+#elif defined(__powerpc64__)
+    const char kArch[] = "ppc64";
+#elif defined(__powerpc__)
+    const char kArch[] = "ppc";
 #else
 #error "This code has not been ported to your platform yet"
 #endif
@@ -606,7 +610,11 @@ class MicrodumpWriter {
 
   const ucontext_t* const ucontext_;
 #if !defined(__ARM_EABI__) && !defined(__mips__)
-  const google_breakpad::fpstate_t* const float_state_;
+  #if defined(__powerpc__)
+    const _libc_fpstate* const float_state_ = NULL;
+  #else
+    const google_breakpad::fpstate_t* const float_state_;
+  #endif
 #endif
   LinuxDumper* dumper_;
   const MappingList& mapping_list_;

@@ -1199,6 +1199,11 @@ class MinidumpWriter {
 
     return true;
   }
+#elif defined(__powerpc__)
+  bool WriteCPUInformation(MDRawSystemInfo* sys_info) {
+    // TODO: For now, keeping this as a placeholder, needs to be implemented
+    return true;
+  }
 #else
 #  error "Unsupported CPU"
 #endif

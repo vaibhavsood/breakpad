@@ -86,6 +86,8 @@ typedef user_regs user_regs_struct;
 #elif defined (__mips__)
 // This file-local typedef simplifies the source code.
 typedef gregset_t user_regs_struct;
+#elif defined (__powerpc__)
+typedef pt_regs user_regs_struct;
 #endif
 
 using google_breakpad::MDTypeHelper;
@@ -523,6 +525,22 @@ ParseThreadRegisters(CrashedProcess::Thread* thread,
   thread->mcontext.fpc_eir = rawregs->float_save.fir;
 #endif
 }
+#elif defined(__powerpc64__)
+static void
+ParseThreadRegisters(CrashedProcess::Thread* thread,
+                     const MinidumpMemoryRange& range) {
+  const MDRawContextPPC64* rawregs = range.GetData<MDRawContextPPC64>(0);
+
+  for(int i = 0; i < MD_CONTEXT_PPC64_GPR_COUNT; i++)
+    thread->regs.gpr[i] = rawregs->gpr[i];
+
+  thread->regs.nip = rawregs->srr0;
+  thread->regs.msr = rawregs->srr1;
+  thread->regs.ctr = rawregs->ctr;
+  thread->regs.xer = rawregs->xer;
+  thread->regs.link = rawregs->lr;
+  thread->regs.ccr = rawregs->cr;
+}
 #else
 #error "This code has not been ported to your platform yet"
 #endif
@@ -611,6 +629,14 @@ ParseSystemInfo(const Options& options, CrashedProcess* crashinfo,
 # else
 #  error "This mips ABI is currently not supported (n32)"
 # endif
+#elif defined(__powerpc64__)
+  if (sysinfo->processor_architecture != MD_CPU_ARCHITECTURE_PPC64) {
+    fprintf(stderr,
+            "This version of minidump-2-core only supports PowerPC (64bit)%s.\n",
+            sysinfo->processor_architecture == MD_CPU_ARCHITECTURE_PPC ?
+            ",\nbut the minidump file is from a 32bit machine" : "");
+    _exit(1);
+  }
 #else
 #error "This code has not been ported to your platform yet"
 #endif

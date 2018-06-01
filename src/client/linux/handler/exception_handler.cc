@@ -461,6 +461,12 @@ bool ExceptionHandler::HandleSignal(int /*sig*/, siginfo_t* info, void* uc) {
     memcpy(&g_crash_context_.float_state, fp_ptr,
            sizeof(g_crash_context_.float_state));
   }
+#elif defined(__powerpc64__)
+  ucontext_t* uc_ptr = (ucontext_t*)uc;
+  if (uc_ptr->uc_mcontext.fp_regs) {
+    memcpy(&g_crash_context_.float_state, uc_ptr->uc_mcontext.fp_regs,
+           sizeof(g_crash_context_.float_state));
+  }
 #elif !defined(__ARM_EABI__) && !defined(__mips__)
   // FP state is not part of user ABI on ARM Linux.
   // In case of MIPS Linux FP state is already part of ucontext_t
@@ -703,8 +709,13 @@ bool ExceptionHandler::WriteMinidump() {
 
 #if !defined(__ARM_EABI__) && !defined(__aarch64__) && !defined(__mips__)
   // FPU state is not part of ARM EABI ucontext_t.
-  memcpy(&context.float_state, context.context.uc_mcontext.fpregs,
-         sizeof(context.float_state));
+ #if defined(__powerpc64__)
+   memcpy(&context.float_state, context.context.uc_mcontext.fp_regs,
+          sizeof(context.float_state));
+ #else
+   memcpy(&context.float_state, context.context.uc_mcontext.fpregs,
+          sizeof(context.float_state));
+ #endif
 #endif
   context.tid = sys_gettid();
 
@@ -726,6 +737,9 @@ bool ExceptionHandler::WriteMinidump() {
 #elif defined(__mips__)
   context.siginfo.si_addr =
       reinterpret_cast<void*>(context.context.uc_mcontext.pc);
+#elif defined(__powerpc64__)
+  context.siginfo.si_addr =
+      reinterpret_cast<void*>(context.context.uc_mcontext.gp_regs[PT_NIP]);
 #else
 #error "This code has not been ported to your platform yet."
 #endif
