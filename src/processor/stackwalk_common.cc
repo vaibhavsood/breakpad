@@ -356,6 +356,14 @@ static void PrintStack(const CallStack *stack,
         sequence = PrintRegister64("r15", frame_amd64->context.r15, sequence);
       if (frame_amd64->context_validity & StackFrameAMD64::CONTEXT_VALID_RIP)
         sequence = PrintRegister64("rip", frame_amd64->context.rip, sequence);
+    } else if (cpu == "ppc64") {
+      const StackFramePPC64 *frame_ppc64 =
+        reinterpret_cast<const StackFramePPC64*>(frame);
+
+      if (frame_ppc64->context_validity & StackFramePPC64::CONTEXT_VALID_SRR0)
+        sequence = PrintRegister("srr0", frame_ppc64->context.srr0, sequence);
+      if (frame_ppc64->context_validity & StackFramePPC64::CONTEXT_VALID_GPR1)
+        sequence = PrintRegister("r1", frame_ppc64->context.gpr[1], sequence);
     } else if (cpu == "sparc") {
       const StackFrameSPARC *frame_sparc =
         reinterpret_cast<const StackFrameSPARC*>(frame);

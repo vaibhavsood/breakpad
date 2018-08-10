@@ -1202,6 +1202,7 @@ class MinidumpWriter {
 #elif defined(__powerpc__)
   bool WriteCPUInformation(MDRawSystemInfo* sys_info) {
     // TODO: For now, keeping this as a placeholder, needs to be implemented
+    sys_info->processor_architecture = MD_CPU_ARCHITECTURE_PPC64;
     return true;
   }
 #else

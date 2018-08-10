@@ -280,6 +280,13 @@ void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext *uc,
     out->float_save.fpregs[i] = fpregs->fpregs[i];
 
   out->float_save.fpscr = fpregs->fpscr;
+
+  out->srr0 = uc->uc_mcontext.regs->nip;
+  out->srr1 = uc->uc_mcontext.regs->msr;
+  out->cr = uc->uc_mcontext.regs->ccr;
+  out->xer = uc->uc_mcontext.regs->xer;
+  out->lr = uc->uc_mcontext.regs->link;
+  out->ctr = uc->uc_mcontext.regs->ctr;
 }
 
 #endif
