@@ -111,7 +111,7 @@ bool LinuxCoreDumper::GetThreadInfoByIndex(size_t index, ThreadInfo* info) {
 #elif defined(__mips__)
   stack_pointer =
       reinterpret_cast<uint8_t*>(info->mcontext.gregs[MD_CONTEXT_MIPS_REG_SP]);
-#elif defined(__PPC__)
+#elif defined(__powerpc__)
   memcpy(&stack_pointer, &info->regs.gpr[1], sizeof(info->regs.gpr[1]));
 #else
 #error "This code hasn't been ported to your platform yet."
@@ -214,6 +214,7 @@ bool LinuxCoreDumper::EnumerateThreads() {
         if (first_thread) {
           crash_thread_ = pid;
           crash_signal_ = status->pr_info.si_signo;
+          crash_signal_code_ = status->pr_info.si_code;
         }
         first_thread = false;
         threads_.push_back(pid);

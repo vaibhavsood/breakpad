@@ -138,7 +138,7 @@ class MicrodumpWriter {
                   const MicrodumpExtraInfo& microdump_extra_info,
                   LinuxDumper* dumper)
       : ucontext_(context ? &context->context : NULL),
-#if !defined(__ARM_EABI__) && !defined(__mips__) && !defined(__PPC__)
+#if !defined(__ARM_EABI__) && !defined(__mips__) && !defined(__powerpc__)
         float_state_(context ? &context->float_state : NULL),
 #endif
         dumper_(dumper),
@@ -337,7 +337,9 @@ class MicrodumpWriter {
 # else
 #  error "This mips ABI is currently not supported (n32)"
 #endif
-#elif defined(__PPC__)
+#elif defined(__powerpc64__)
+    const char kArch[] = "ppc64";
+#elif defined(__powerpc__)
     const char kArch[] = "ppc";
 #else
 #error "This code has not been ported to your platform yet"
@@ -607,10 +609,12 @@ class MicrodumpWriter {
   void* Alloc(unsigned bytes) { return dumper_->allocator()->Alloc(bytes); }
 
   const ucontext_t* const ucontext_;
-#if !defined(__ARM_EABI__) && !defined(__mips__) && !defined(__PPC__)
-  const google_breakpad::fpstate_t* const float_state_;
-#elif defined(__PPC__)
-  const _libc_fpstate* const float_state_ = NULL;
+#if !defined(__ARM_EABI__) && !defined(__mips__)
+  #if defined(__powerpc__)
+    const _libc_fpstate* const float_state_ = NULL;
+  #else
+    const google_breakpad::fpstate_t* const float_state_;
+  #endif
 #endif
   LinuxDumper* dumper_;
   const MappingList& mapping_list_;
@@ -652,9 +656,7 @@ bool WriteMicrodump(pid_t crashing_process,
     if (blob_size != sizeof(ExceptionHandler::CrashContext))
       return false;
     context = reinterpret_cast<const ExceptionHandler::CrashContext*>(blob);
-    dumper.set_crash_address(
-        reinterpret_cast<uintptr_t>(context->siginfo.si_addr));
-    dumper.set_crash_signal(context->siginfo.si_signo);
+    dumper.SetCrashInfoFromSigInfo(context->siginfo);
     dumper.set_crash_thread(context->tid);
   }
   MicrodumpWriter writer(context, mappings,

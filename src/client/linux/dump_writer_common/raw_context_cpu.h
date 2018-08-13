@@ -44,12 +44,7 @@ typedef MDRawContextARM RawContextCPU;
 typedef MDRawContextARM64 RawContextCPU;
 #elif defined(__mips__)
 typedef MDRawContextMIPS RawContextCPU;
-#elif defined(__PPC64__)
-/* Most of the PPC-specific changes in breakpad's source code are referred from
-        Commit - https://github.com/ibmsoe/phantomjs/commit/2867533b02b6407523deb0c603673142c3f8c1b1
-        Repo - https://github.com/ibmsoe/phantomjs
-        Done by - Ayappan P (github_id: ayappanec)
-*/
+#elif defined(__powerpc64__)
 typedef MDRawContextPPC64 RawContextCPU;
 #else
 #error "This code has not been ported to your platform yet."
