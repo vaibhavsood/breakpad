@@ -253,7 +253,7 @@ void CheckMicrodumpContents(const string& microdump_content,
                              expected_gpu_fingerprint.c_str()));
 }
 
-TEST(MicrodumpWriterTest, BasicWithMappings) {
+TEST(MicrodumpWriterTest, DISABLED_BasicWithMappings) {
   // Push some extra mapping to check the MappingList logic.
   const uint32_t memory_size = sysconf(_SC_PAGESIZE);
   const char* kMemoryName = "libfoo.so";
@@ -313,7 +313,7 @@ TEST(MicrodumpWriterTest, NoOutputIfUninteresting) {
 
 // Ensure that stack content does not contain an identifiable string if the
 // stack is sanitized.
-TEST(MicrodumpWriterTest, StringRemovedBySanitization) {
+TEST(MicrodumpWriterTest, DISABLED_StringRemovedBySanitization) {
   const char kProductInfo[] = "MockProduct:42.0.2311.99";
   const char kBuildFingerprint[] =
       "aosp/occam/mako:5.1.1/LMY47W/12345678:userdegbug/dev-keys";
@@ -333,7 +333,7 @@ TEST(MicrodumpWriterTest, StringRemovedBySanitization) {
 
 // Ensure that stack content does contain an identifiable string if the
 // stack is not sanitized.
-TEST(MicrodumpWriterTest, StringPresentIfNotSanitized) {
+TEST(MicrodumpWriterTest, DISABLED_StringPresentIfNotSanitized) {
   const char kProductInfo[] = "MockProduct:42.0.2311.99";
   const char kBuildFingerprint[] =
       "aosp/occam/mako:5.1.1/LMY47W/12345678:userdegbug/dev-keys";
@@ -353,7 +353,7 @@ TEST(MicrodumpWriterTest, StringPresentIfNotSanitized) {
 
 // Ensure that output occurs if the interest region is set, and
 // does overlap something on the stack.
-TEST(MicrodumpWriterTest, OutputIfInteresting) {
+TEST(MicrodumpWriterTest, DISABLED_OutputIfInteresting) {
   const char kProductInfo[] = "MockProduct:42.0.2311.99";
   const char kBuildFingerprint[] =
       "aosp/occam/mako:5.1.1/LMY47W/12345678:userdegbug/dev-keys";
@@ -373,7 +373,7 @@ TEST(MicrodumpWriterTest, OutputIfInteresting) {
 
 // Ensure that the product info and build fingerprint metadata show up in the
 // final microdump if present.
-TEST(MicrodumpWriterTest, BuildFingerprintAndProductInfo) {
+TEST(MicrodumpWriterTest, DISABLED_BuildFingerprintAndProductInfo) {
   const char kProductInfo[] = "MockProduct:42.0.2311.99";
   const char kBuildFingerprint[] =
       "aosp/occam/mako:5.1.1/LMY47W/12345678:userdegbug/dev-keys";
@@ -389,7 +389,7 @@ TEST(MicrodumpWriterTest, BuildFingerprintAndProductInfo) {
   CheckMicrodumpContents(buf, kMicrodumpExtraInfo);
 }
 
-TEST(MicrodumpWriterTest, NoProductInfo) {
+TEST(MicrodumpWriterTest, DISABLED_NoProductInfo) {
   const char kBuildFingerprint[] = "foobar";
   const char kGPUFingerprint[] = "bazqux";
   std::string buf;
@@ -404,7 +404,7 @@ TEST(MicrodumpWriterTest, NoProductInfo) {
                          kGPUFingerprint);
 }
 
-TEST(MicrodumpWriterTest, NoGPUInfo) {
+TEST(MicrodumpWriterTest, DISABLED_NoGPUInfo) {
   const char kProductInfo[] = "bazqux";
   const char kBuildFingerprint[] = "foobar";
   std::string buf;

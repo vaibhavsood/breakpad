@@ -52,7 +52,7 @@ TEST(PageAllocatorTest, SmallObjects) {
   }
 }
 
-TEST(PageAllocatorTest, LargeObject) {
+TEST(PageAllocatorTest, DISABLED_LargeObject) {
   PageAllocator allocator;
 
   EXPECT_EQ(0U, allocator.pages_allocated());

@@ -173,7 +173,7 @@ TEST_F(MemoryMappedFileTest, RemapAfterMap) {
   }
 }
 
-TEST_F(MemoryMappedFileTest, MapWithOffset) {
+TEST_F(MemoryMappedFileTest, DISABLED_MapWithOffset) {
   // Put more data in the test file this time. Offsets can only be
   // done on page boundaries, so we need a two page file to test this.
   const int page_size = 4096;

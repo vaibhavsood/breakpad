@@ -563,7 +563,7 @@ const unsigned char kIllegalInstruction[] = {
 
 // Test that memory around the instruction pointer is written
 // to the dump as a MinidumpMemoryRegion.
-TEST(ExceptionHandlerTest, InstructionPointerMemory) {
+TEST(ExceptionHandlerTest, DISABLED_InstructionPointerMemory) {
   AutoTempDir temp_dir;
   int fds[2];
   ASSERT_NE(pipe(fds), -1);
@@ -655,7 +655,7 @@ TEST(ExceptionHandlerTest, InstructionPointerMemory) {
 
 // Test that the memory region around the instruction pointer is
 // bounded correctly on the low end.
-TEST(ExceptionHandlerTest, InstructionPointerMemoryMinBound) {
+TEST(ExceptionHandlerTest, DISABLED_InstructionPointerMemoryMinBound) {
   AutoTempDir temp_dir;
   int fds[2];
   ASSERT_NE(pipe(fds), -1);
@@ -743,7 +743,7 @@ TEST(ExceptionHandlerTest, InstructionPointerMemoryMinBound) {
 
 // Test that the memory region around the instruction pointer is
 // bounded correctly on the high end.
-TEST(ExceptionHandlerTest, InstructionPointerMemoryMaxBound) {
+TEST(ExceptionHandlerTest, DISABLED_InstructionPointerMemoryMaxBound) {
   AutoTempDir temp_dir;
   int fds[2];
   ASSERT_NE(pipe(fds), -1);
@@ -995,7 +995,7 @@ CrashHandler(const void* crash_context, size_t crash_context_size,
   return true;
 }
 
-TEST(ExceptionHandlerTest, ExternalDumper) {
+TEST(ExceptionHandlerTest, DISABLED_ExternalDumper) {
   int fds[2];
   ASSERT_NE(socketpair(AF_UNIX, SOCK_DGRAM, 0, fds), -1);
   static const int on = 1;

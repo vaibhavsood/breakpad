@@ -60,7 +60,7 @@ typedef testing::Test MinidumpWriterTest;
 
 const char kMDWriterUnitTestFileName[] = "/minidump-writer-unittest";
 
-TEST(MinidumpWriterTest, SetupWithPath) {
+TEST(MinidumpWriterTest, DISABLED_SetupWithPath) {
   int fds[2];
   ASSERT_NE(-1, pipe(fds));
 
@@ -90,7 +90,7 @@ TEST(MinidumpWriterTest, SetupWithPath) {
   IGNORE_EINTR(waitpid(child, nullptr, 0));
 }
 
-TEST(MinidumpWriterTest, SetupWithFD) {
+TEST(MinidumpWriterTest, DISABLED_SetupWithFD) {
   int fds[2];
   ASSERT_NE(-1, pipe(fds));
 
@@ -312,7 +312,7 @@ TEST(MinidumpWriterTest, MinidumpStacksSkippedIfRequested) {
 }
 
 // Test that stacks can be sanitized while writing minidumps.
-TEST(MinidumpWriterTest, StacksAreSanitizedIfRequested) {
+TEST(MinidumpWriterTest, DISABLED_StacksAreSanitizedIfRequested) {
   int fds[2];
   ASSERT_NE(-1, pipe(fds));
 
@@ -413,7 +413,7 @@ TEST(MinidumpWriterTest, BuildIDLong) {
 // Test that mapping info can be specified, and that it overrides
 // existing mappings that are wholly contained within the specified
 // range.
-TEST(MinidumpWriterTest, MappingInfoContained) {
+TEST(MinidumpWriterTest, DISABLED_MappingInfoContained) {
   int fds[2];
   ASSERT_NE(-1, pipe(fds));
 
@@ -505,7 +505,7 @@ TEST(MinidumpWriterTest, MappingInfoContained) {
   IGNORE_EINTR(waitpid(child, nullptr, 0));
 }
 
-TEST(MinidumpWriterTest, DeletedBinary) {
+TEST(MinidumpWriterTest, DISABLED_DeletedBinary) {
   const string kNumberOfThreadsArgument = "1";
   const string helper_path(GetHelperBinary());
   if (helper_path.empty()) {
