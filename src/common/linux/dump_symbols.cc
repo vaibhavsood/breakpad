@@ -315,6 +315,9 @@ bool DwarfCFIRegisterNames(const typename ElfClass::Ehdr* elf_header,
     case EM_X86_64:
       *register_names = DwarfCFIToModule::RegisterNames::X86_64();
       return true;
+    case EM_PPC64:
+      *register_names = DwarfCFIToModule::RegisterNames::PPC64();
+      return true;
     default:
       return false;
   }

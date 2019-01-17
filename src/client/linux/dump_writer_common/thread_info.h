@@ -72,6 +72,7 @@ struct ThreadInfo {
   // Use the structure defined in <sys/ucontext.h>.
   mcontext_t mcontext;
 #elif defined(__powerpc__)
+  mcontext_t mcontext;
   struct pt_regs regs;
   elf_fpregset_t fpregs;
 #endif

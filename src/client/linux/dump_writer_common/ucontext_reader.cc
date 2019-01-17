@@ -257,7 +257,8 @@ void UContextReader::FillCPUContext(RawContextCPU *out, const ucontext_t *uc) {
 #elif defined(__powerpc64__)
 
 uintptr_t UContextReader::GetStackPointer(const struct ucontext* uc) {
-  return uc->uc_mcontext.regs->gpr[1];
+  //return uc->uc_mcontext.regs->gpr[1];
+  return uc->uc_mcontext.gp_regs[MD_CONTEXT_PPC64_REG_SP]; 
 }
 
 uintptr_t UContextReader::GetInstructionPointer(const struct ucontext* uc) {

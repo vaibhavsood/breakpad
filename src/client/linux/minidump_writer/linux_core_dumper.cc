@@ -112,7 +112,9 @@ bool LinuxCoreDumper::GetThreadInfoByIndex(size_t index, ThreadInfo* info) {
   stack_pointer =
       reinterpret_cast<uint8_t*>(info->mcontext.gregs[MD_CONTEXT_MIPS_REG_SP]);
 #elif defined(__powerpc__)
-  memcpy(&stack_pointer, &info->regs.gpr[1], sizeof(info->regs.gpr[1]));
+  //memcpy(&stack_pointer, &info->regs.gpr[1], sizeof(info->regs.gpr[1]));
+  stack_pointer =
+      reinterpret_cast<uint8_t*>(info->mcontext.gp_regs[MD_CONTEXT_PPC64_REG_SP]);
 #else
 #error "This code hasn't been ported to your platform yet."
 #endif

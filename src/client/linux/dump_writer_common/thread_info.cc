@@ -278,7 +278,7 @@ uintptr_t ThreadInfo::GetInstructionPointer() const {
 }
 
 void ThreadInfo::FillCPUContext(RawContextCPU* out) const {
-  out->context_flags = MD_CONTEXT_PPC64;
+  out->context_flags = MD_CONTEXT_PPC64_FULL;
 
   for (int i = 0; i < MD_CONTEXT_PPC64_GPR_COUNT; ++i)
     out->gpr[i] = regs.gpr[i];
@@ -318,7 +318,7 @@ void ThreadInfo::GetFloatingPointRegisters(void** fp_regs, size_t* size) {
   if (fp_regs)
     *fp_regs = &fpregs;
   if (size)
-    *size = sizeof(regs);
+    *size = sizeof(fpregs);
 #else
   if (fp_regs)
     *fp_regs = &fpregs;

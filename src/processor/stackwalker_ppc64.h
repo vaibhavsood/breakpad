@@ -40,6 +40,8 @@
 #include "google_breakpad/common/breakpad_types.h"
 #include "google_breakpad/common/minidump_format.h"
 #include "google_breakpad/processor/stackwalker.h"
+#include "google_breakpad/processor/stack_frame_cpu.h"
+#include "processor/cfi_frame_info.h"
 
 namespace google_breakpad {
 
@@ -64,7 +66,10 @@ class StackwalkerPPC64 : public Stackwalker {
   virtual StackFrame* GetContextFrame();
   virtual StackFrame* GetCallerFrame(const CallStack* stack,
                                      bool stack_scan_allowed);
-
+  StackFramePPC64* GetCallerByCFIFrameInfo(const vector<StackFrame*> &frames,
+                                             CFIFrameInfo* cfi_frame_info);
+  StackFramePPC64* GetCallerByFramePointer(const vector<StackFrame*> &frames);
+  StackFramePPC64* GetCallerByStackScan(const vector<StackFrame*> &frames);
   // Stores the CPU context corresponding to the innermost stack frame to
   // be returned by GetContextFrame.
   const MDRawContextPPC64* context_;

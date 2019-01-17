@@ -1043,6 +1043,8 @@ class MinidumpWriter {
     sys_info->processor_architecture =
 #if defined(__aarch64__)
         MD_CPU_ARCHITECTURE_ARM64;
+#elif defined(__PPC64__)
+        MD_CPU_ARCHITECTURE_PPC64;
 #elif defined(__PPC__)
         MD_CPU_ARCHITECTURE_PPC;
 #else
