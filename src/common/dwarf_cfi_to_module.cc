@@ -148,7 +148,17 @@ vector<string> DwarfCFIToModule::RegisterNames::PPC64() {
     "r8",  "r9",  "r10", "r11", "r12", "r13", "r14", "r15",
     "r16", "r17", "r18", "r19", "r20", "r21", "r22", "r23",
     "r24", "r25", "r26", "r27", "r28", "r29", "r30", "r31",
-    "srr0", "srr1"
+    "f0",  "f1",  "f2",  "f3",  "f4",  "f5",  "f6",  "f7",
+    "f8",  "f9",  "f10", "f11", "f12", "f13", "f14", "f15",
+    "f16", "f17", "f18", "f19", "f20", "f21", "f22", "f23",
+    "f24", "f25", "f26", "f27", "f28", "f29", "f30", "f31",
+    "", "lr", "ctr", "", "cr0", "cr1", "cr2", "cr3", "cr4",
+    "cr5", "cr6", "cr7", "xer", "vr0", "vr1", "vr2", "vr3",
+    "vr4", "vr5", "vr6", "vr7", "vr8", "vr9", "vr10","vr11",
+    "vr12", "vr13", "vr14", "vr15", "vr16", "vr17", "vr18", "vr19",
+    "vr20", "vr21", "vr22", "vr23", "vr24", "vr25", "vr26",
+    "vr28", "vr29", "vr30", "vr31", "", "vscr", "", "", "",
+    "tfhar", "tfiar", "texasr"
   };
 
   return MakeVector(names, sizeof(names) / sizeof(names[0]));
